@@ -9,19 +9,19 @@ on:
 jobs:
     unit-tests:
         name: Unit Tests
-        runs-on: ubuntu-24.04
-
+        runs-on: ubuntu-latest # Uses the latest stable runner automatically
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v5
+            - name: Checkout
+              uses: actions/checkout@v4
 
             - name: Setup Node.js
-              uses: actions/setup-node@v5
+              uses: actions/setup-node@v4
               with:
-                  node-version: '24'
+                  node-version: 22 # Recommended: Use the current LTS (v22) unless v24 is required
                   cache: 'npm'
+                  check-latest: true
 
-            - name: Install deps
+            - name: Install dependencies
               run: npm ci
 
             - name: Run tests
