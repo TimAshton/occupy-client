@@ -17,8 +17,4 @@ function takeTurn() {
     };
 }
 
-function getSectorOwner() {
-    return true;
-}
-
 export { startGame, takeTurn };
