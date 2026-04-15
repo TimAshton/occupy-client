@@ -9,20 +9,24 @@ on:
 jobs:
     unit-tests:
         name: Unit Tests
-        runs-on: ubuntu-latest # Uses the latest stable runner automatically
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        env:
+            # Opts into the new Node 24 runner engine now to clear the deprecation error
+            FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
 
             - name: Setup Node.js
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v5
               with:
-                  node-version: 22 # Recommended: Use the current LTS (v22) unless v24 is required
+                  node-version: 24
                   cache: 'npm'
-                  check-latest: true
 
-            - name: Install dependencies
-              run: npm ci
-
-            - name: Run tests
-              run: npm test
+            - name: Install & Test
+              run: |
+                  npm ci
+                  npm test
