@@ -1,5 +1,3 @@
-export default function Sector({sectorClickHandler, sector}) {
-    return (
-        <div className="box" onClick={() => sectorClickHandler(sector)}></div>
-    )
+export default function Sector() {
+    return <div className="box"></div>;
 }
