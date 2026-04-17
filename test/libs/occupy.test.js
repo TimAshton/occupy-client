@@ -1,6 +1,6 @@
 import { it, describe, expect } from 'vitest';
 
-import { startGame, takeTurn } from '../../src/libs/occupy';
+import { startGame, takeTurn, createSector } from '../../src/libs/occupy';
 
 describe('newGame', () => {
     it('should return a predictable, new game object.', () => {
@@ -30,4 +30,18 @@ describe('takeTurn', () => {
     });
 
     it.skip('should update turnIndicator when turn is over', () => {});
+});
+
+describe('createSector', () => {
+    it('should return a predictable sector object', () => {
+        const expected = {
+            x: 1,
+            y: 1,
+            owner: '',
+            settlerCount: 0,
+        };
+
+        const result = createSector(1, 1);
+        expect(result).toStrictEqual(expected);
+    });
 });

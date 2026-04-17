@@ -17,4 +17,13 @@ function takeTurn() {
     };
 }
 
-export { startGame, takeTurn };
+function createSector(x, y) {
+    return {
+        x,
+        y,
+        owner: '',
+        settlerCount: 0,
+    };
+}
+
+export { startGame, takeTurn, createSector };

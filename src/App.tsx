@@ -1,16 +1,7 @@
-import { useState, useEffect, use } from 'react'
-import PlayerColumn from './components/PlayerColumn.js'
-import GameColumn from './components/GameColumn.js'
-import './App.css'
-
-function createSector(x: number,y: number) {
-    return {
-        x,
-        y,
-        owner: "",
-        settlerCount: 0,
-    }
-}
+import { useState, useEffect } from 'react';
+import PlayerColumn from './components/PlayerColumn.js';
+import GameColumn from './components/GameColumn.js';
+import { createSector } from './libs/occupy.js';
 
 const sectors_arr = [
     createSector(1, 1),
@@ -38,65 +29,73 @@ const sectors_arr = [
     createSector(5, 3),
     createSector(5, 4),
     createSector(5, 5),
-]
+];
 
 function App() {
-  const [ turnIndicator, setTurnIndicator ] = useState(1)
-  const [ status, setStatus ] = useState(false)
-  const [ playerOne, setPlayerOne ] = useState({ name: "Blue", settlers: 1000 })
-  const [ playerTwo, setPlayerTwo ] = useState({ name: "Red", settlers: 1000 })
-  const [ message, setMessage ] = useState("Welcome. Click 'New Game' to begin.")
+    const [turnIndicator, setTurnIndicator] = useState(1);
+    const [status, setStatus] = useState(false);
+    const [playerOne, setPlayerOne] = useState({
+        name: 'Blue',
+        settlers: 1000,
+    });
+    const [playerTwo, setPlayerTwo] = useState({ name: 'Red', settlers: 1000 });
+    const [message, setMessage] = useState(
+        "Welcome. Click 'New Game' to begin.",
+    );
 
-  // Replaces componentDidMount:
-  useEffect(() => {
-    console.log("Component mounted.")
-    return () => {
-      console.log("Component will unmount.")
+    // Replaces componentDidMount:
+    useEffect(() => {
+        console.log('Component mounted.');
+        return () => {
+            console.log('Component will unmount.');
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log('Turn indicator changed: ', turnIndicator);
+    }, [turnIndicator]);
+
+    function sectorClickHandler(sector: { x: number; y: number }) {
+        console.log('Sector clicked: ', sector.x, sector.y);
+        setTurnIndicator(turnIndicator === 1 ? 2 : 1);
     }
-  }, [])
 
-  useEffect(() => {
-    console.log("Turn indicator changed: ", turnIndicator)
-  }, [turnIndicator])
+    function newGameClickHandler() {
+        setMessage('');
+        setStatus(true);
+    }
 
-  function sectorClickHandler(sector: { x: number, y: number }) {
-    console.log("Sector clicked: ", sector.x, sector.y)
-      setTurnIndicator(turnIndicator === 1 ? 2 : 1)
-  }
+    function endGameClickHandler() {
+        setMessage("Click 'New Game' to begin.");
+        setStatus(false);
+    }
 
-  function newGameClickHandler() {
-    setMessage("")
-    setStatus(true)
-  }
-
-  function endGameClickHandler() {
-    setMessage("Click 'New Game' to begin.")
-    setStatus(false)
-  }
-
-  return (
-    <div className="container">
-        <PlayerColumn 
-          name="Blue" 
-          turnIndicator={turnIndicator} 
-          nameClass={`blue ${turnIndicator === 1 ? 'turn-indicator' : ''}`}
-          sectors={sectors_arr}
-          player={playerOne} />
-        <GameColumn 
-          sectorClickHandler={sectorClickHandler}
-          sectors={sectors_arr}
-          status={status}
-          newGameClickHandler={newGameClickHandler}
-          endGameClickHandler={endGameClickHandler}
-          message={message} />
-        <PlayerColumn 
-          name="Red" 
-          turnIndicator={turnIndicator} 
-          nameClass={`red ${turnIndicator === 2 ? 'turn-indicator' : ''}`} 
-          sectors={sectors_arr}
-          player={playerTwo} />
-    </div>
-  )
+    return (
+        <div className="container">
+            <PlayerColumn
+                name="Blue"
+                turnIndicator={turnIndicator}
+                nameClass={`blue ${turnIndicator === 1 ? 'turn-indicator' : ''}`}
+                sectors={sectors_arr}
+                player={playerOne}
+            />
+            <GameColumn
+                sectorClickHandler={sectorClickHandler}
+                sectors={sectors_arr}
+                status={status}
+                newGameClickHandler={newGameClickHandler}
+                endGameClickHandler={endGameClickHandler}
+                message={message}
+            />
+            <PlayerColumn
+                name="Red"
+                turnIndicator={turnIndicator}
+                nameClass={`red ${turnIndicator === 2 ? 'turn-indicator' : ''}`}
+                sectors={sectors_arr}
+                player={playerTwo}
+            />
+        </div>
+    );
 }
 
-export default App
+export default App;
