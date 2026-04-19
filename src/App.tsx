@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import PlayerColumn from './components/PlayerColumn.js';
 import GameColumn from './components/GameColumn.js';
+import CreateGame from './components/CreateGame.js';
+
 import { createSector } from './libs/occupy.js';
 
 const sectors_arr = [
@@ -32,69 +35,20 @@ const sectors_arr = [
 ];
 
 function App() {
-    const [turnIndicator, setTurnIndicator] = useState(1);
-    const [status, setStatus] = useState(false);
-    const [playerOne, setPlayerOne] = useState({
-        name: 'Blue',
-        settlers: 1000,
-    });
-    const [playerTwo, setPlayerTwo] = useState({ name: 'Red', settlers: 1000 });
-    const [message, setMessage] = useState(
-        "Welcome. Click 'New Game' to begin.",
-    );
-
-    // Replaces componentDidMount:
-    useEffect(() => {
-        console.log('Component mounted.');
-        return () => {
-            console.log('Component will unmount.');
-        };
-    }, []);
-
-    useEffect(() => {
-        console.log('Turn indicator changed: ', turnIndicator);
-    }, [turnIndicator]);
-
-    function sectorClickHandler(sector: { x: number; y: number }) {
-        console.log('Sector clicked: ', sector.x, sector.y);
-        setTurnIndicator(turnIndicator === 1 ? 2 : 1);
-    }
-
-    function newGameClickHandler() {
-        setMessage('');
-        setStatus(true);
-    }
-
-    function endGameClickHandler() {
-        setMessage("Click 'New Game' to begin.");
-        setStatus(false);
-    }
+    const [gameId, setGameId] = useState(undefined);
 
     return (
-        <div className="container">
-            <PlayerColumn
-                name="Blue"
-                turnIndicator={turnIndicator}
-                nameClass={`blue ${turnIndicator === 1 ? 'turn-indicator' : ''}`}
-                sectors={sectors_arr}
-                player={playerOne}
-            />
-            <GameColumn
-                sectorClickHandler={sectorClickHandler}
-                sectors={sectors_arr}
-                status={status}
-                newGameClickHandler={newGameClickHandler}
-                endGameClickHandler={endGameClickHandler}
-                message={message}
-            />
-            <PlayerColumn
-                name="Red"
-                turnIndicator={turnIndicator}
-                nameClass={`red ${turnIndicator === 2 ? 'turn-indicator' : ''}`}
-                sectors={sectors_arr}
-                player={playerTwo}
-            />
-        </div>
+        <>
+            {gameId ? (
+                <div className="container">
+                    <PlayerColumn name="Blue" />
+                    <GameColumn />
+                    <PlayerColumn name="Red" />
+                </div>
+            ) : (
+                <CreateGame />
+            )}
+        </>
     );
 }
 
