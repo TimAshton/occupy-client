@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
+const sectorCount = 25
+
 function startGame() {
     const gameId = uuidv4();
 
@@ -26,4 +28,4 @@ function createSector(x, y) {
     };
 }
 
-export { startGame, takeTurn, createSector };
+export { startGame, takeTurn, createSector, sectorCount };
